@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { API } from '../../api/api';
 
 export const dictionarySlice = createSlice({
   name: 'dictionary',
   initialState: {
     definition: '',
 		word: '',
-		valid: null
+		valid: true,
+		isFetching: null
   },
   reducers: {
     setWordDescr: (state, action) => {
@@ -13,20 +15,33 @@ export const dictionarySlice = createSlice({
       state.word = action.payload.word;
       state.valid = action.payload.valid;
     },
+		startFetching: (state) => {
+			state.isFetching = true;
+		},
+		finishFetching: (state) => {
+			state.isFetching = false;
+		}
   }
 })
 
-export const { setWordDescr } = dictionarySlice.actions;
+export const { setWordDescr, startFetching, finishFetching } = dictionarySlice.actions;
 
 export default dictionarySlice.reducer;
 
 export const fetchWordDescr = word => {
   return async (dispatch) => {
     try {
-      // const defenition = await userAPI.fetchById(word)
-      // dispatch(setWordDescr(defenition))
+			dispatch(startFetching());
+      const defenition = await API.dictionary.getDescr(word); 
+      dispatch(finishFetching());
+			dispatch(setWordDescr(defenition));
     } catch (err) {
-      // If something went wrong, handle it here
+			// dispatch(setWordDescr(defenition))
     }
   }
 }
+
+export const selectDefinition = (state) => state.dictionaty.definition;
+export const selectWord = (state) => state.dictionaty.word;
+export const selectValid = (state) => state.dictionaty.valid;
+export const selectIsFetching = (state) => state.dictionaty.isFetching;
