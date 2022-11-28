@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import {
   updateVerb,
   updateBundle
@@ -14,6 +16,7 @@ export function Combinator() {
   return (
     <div>
       Combinator
+			<Link className="button muted-button" to={'/'}>To home</Link>
     </div>
   )
 }
