@@ -71,7 +71,9 @@ export const data = {
 		'handsome',
 		'capricious',
 		'fastidious',
-		'heavy-duty'
+		'heavy-duty',
+		'idle',
+		'expeditious'
 	],
 	bundles: [
 		'around',
@@ -145,6 +147,12 @@ export const data = {
 		'To have let yourself go',
 		'Shoe in for',
 		'No harm in trying',
-		'Squeaky wheel gets the grease'
+		'Squeaky wheel gets the grease',
+		'Travelling on a budget',
+		'Time is on our side',
+		'Time will tell',
+		'Time for a change',
+		'The time is ripe',
+		'In a blink of eye'
 	] 
 };

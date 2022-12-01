@@ -15,6 +15,7 @@ import { Combinator }  from './features/combinator/Combinator';
 import { NoteList } from './features/notebook/NoteList';
 import { SingleNote } from './features/notebook/SingleNote';
 import { EditNoteForm } from './features/notebook/EditNoteForm';
+import { fetchUsers } from './features/users/usersSlice';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
 		]
   },
 ]);
+
+store.dispatch(fetchUsers());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

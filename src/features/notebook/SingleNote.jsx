@@ -2,14 +2,12 @@ import { useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { NoteAuthor } from './NoteAuthor';
 import { TimeAgo } from './TimeAgo';
-import { ReactionButtons } from './ReactionButtons';
+import { selectNoteById } from './notebookSlice';
 
 export const SingleNote = () => {
   const { noteId } = useParams();
 
-  const note = useSelector(state =>
-    state.notebook.find(note => note.id === noteId)
-  )
+  const note = useSelector(state => selectNoteById(state, noteId));
 
   if (!note) {
     return (
@@ -28,7 +26,6 @@ export const SingleNote = () => {
           <TimeAgo timestamp={note.date} />
         </div>
         <p className="post-content">{note.content}</p>
-				<ReactionButtons note={note} />
 				<Link to={`/notebook/${note.id}/edit`} className="button">
 					Edit post
 				</Link>

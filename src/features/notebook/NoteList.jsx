@@ -1,24 +1,48 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { AddNoteForm } from './AddNoteForm';
+import { selectAllNotes } from './notebookSlice';
+import { fetchPosts } from './notebookSlice';
+import { Spinner } from '../../layout/Spinner/Spinner';
+
+const Post = ({post, user}) => {
+	return (
+	<article className="note-excerpt" key={post.id}>
+		<h3>{post.title}</h3>
+		<p>Author: {user.name}</p>
+		<p className="note-content">{post.body}</p>
+		<Link to={`/notebook/${post.id}`}>Detail</Link>
+	</article>
+	);
+}
 
 export const NoteList = () => {
-  const notes = useSelector(state => state.notebook);
-	const orderedNotes = notes.slice().sort((a, b) => b.date.localeCompare(a.date));
+	const dispatch = useDispatch();
+	const users = useSelector(state => state.users);
+  const notes = useSelector(selectAllNotes);
+	const sortedNotes = notes.slice().sort((a, b) => b.id - a.id);
 
-  const renderedNotes = orderedNotes.map(note => (
-    <article className="note-excerpt" key={note.id}>
-      <h3>{note.title}</h3>
-      <p className="note-content">{note.content.substring(0, 100)}</p>
-			<Link to={`/notebook/${note.id}`}>Detail</Link>
-    </article>
-  ))
+	const noteStatus = useSelector(state => state.notebook.status);
+	const error = useSelector(state => state.notebook.error);
+
+	useEffect(() => {
+		if (noteStatus === 'idle') {
+			dispatch(fetchPosts());
+		}
+	}, [noteStatus, dispatch]);
 
   return (
     <section className="note-list">
       <h2>Posts</h2>
 			<AddNoteForm />
-      {renderedNotes || <div>No notes!</div>}
+      {noteStatus === 'loading' && <Spinner text="Loading..." />}
+			{noteStatus === 'succeeded' && sortedNotes.map(post => {
+				const user = users.find(u => u.id === post.userId);
+				return <Post key={post.id} post={post} user={user} />
+			})}
+			{noteStatus === 'failed' && <div>{error}</div>}
 			<Link className="button muted-button" to={'/'}>To home</Link>
     </section>
   )

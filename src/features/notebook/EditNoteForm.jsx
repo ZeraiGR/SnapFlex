@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { noteUpdated } from "./notebookSlice";
 import { useParams, useNavigate } from 'react-router-dom';
+import { selectNoteById } from './notebookSlice';
 
 export const EditNoteForm = () => {
 	const { noteId } = useParams();
 
-  const note = useSelector(state =>
-    state.notebook.find(note => note.id === noteId)
-  );
+  const note = useSelector(state => selectNoteById(state, noteId));
 
   const [title, setTitle] = useState(note.title);
   const [content, setContent] = useState(note.content);
