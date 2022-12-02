@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/user-event": "latest",
     "axios": "^1.2.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.12.0",
@@ -14,13 +14,16 @@
     "react-dom": "latest",
     "react-redux": "latest",
     "react-router-dom": "latest",
-    "react-scripts": "^4"
+    "react-scripts": "latest"
   },
   "scripts": {
-    "start": "react-scripts --max-http-header-size=1024 start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.11"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,7 +43,8 @@
   "devDependencies": {
     "prettier": "^2.0.2"
   },
-  "msw": {
-    "workerDirectory": "public"
-  }
+  "main": "index.js",
+  "repository": "https://github.com/ZeraiGR/SnapFlex.git",
+  "author": "ZeraiGR <kirillgr15@mail.ru>",
+  "license": "MIT"
 }

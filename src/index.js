@@ -12,10 +12,12 @@ import Layout from './layout/Layout';
 import ErrorPage from './layout/ErrorPage/ErrorPage';
 import Index from './routes';
 import { Combinator }  from './features/combinator/Combinator';
-import { NoteList } from './features/notebook/NoteList';
-import { SingleNote } from './features/notebook/SingleNote';
-import { EditNoteForm } from './features/notebook/EditNoteForm';
+import { PostList } from './features/posts/PostList';
+import { SinglePost } from './features/posts/SinglePost';
+import { EditPostForm } from './features/posts/EditPostForm';
 import { fetchUsers } from './features/users/usersSlice';
+import { UsersList } from './features/users/UsersList';
+import { UsersSingle } from './features/users/UsersSingle';
 
 const router = createBrowserRouter([
   {
@@ -27,9 +29,11 @@ const router = createBrowserRouter([
 				children: [
 					{index: true, element: <Index />},
 					{path: "combinator", element: <Combinator />},
-					{path: "notebook", element: <NoteList />},
-					{path: "notebook/:noteId", element: <SingleNote />},
-					{path: "notebook/:noteId/edit", element: <EditNoteForm />}
+					{path: "posts", element: <PostList />},
+					{path: "posts/:postId", element: <SinglePost />},
+					{path: "posts/:postId/edit", element: <EditPostForm />},
+					{path: "users", element: <UsersList/>},
+					{path: "users/:userId", element: <UsersSingle />}
 				]
 			}
 		]

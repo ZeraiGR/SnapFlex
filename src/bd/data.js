@@ -51,7 +51,8 @@ export const data = {
 		'precinct',
 		'tan',
 		'grease',
-		'squeak'
+		'squeak',
+		'flaw'
 	],
 	adjectives: [
 		'avid',

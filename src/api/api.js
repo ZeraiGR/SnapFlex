@@ -11,20 +11,29 @@ const postsInstance = axios.create({
 
 export const API = {
 	dictionary: {
-		getDescr: (word) => {
+		getDescr: async (word) => {
 			return dictionaryInstance.get(`dictionary?word=${word}`).then((res) => res.data);
 		}
 	},
+	users: {
+		getUsers: async () => {
+			return postsInstance.get('users').then((res) => res.data);
+		},
+	},
 	posts: {
-		getPosts: () => {
+		getPosts: async () => {
 			return postsInstance.get('posts').then((res) => res.data
 			);
 		},
-		getUsers: () => {
-			return postsInstance.get('users').then((res) => res.data);
-		},
-		addPost: (post) => {
+		addPost: async (post) => {
 			return postsInstance.post('posts', post).then((res) => res.data);
+		},
+		updatePost: async (post) => {
+			return postsInstance.put(`posts/${post.id}`, post).then((res) => res.data);
+		},
+		deletePost: async (postId) => {
+			return postsInstance.delete(`posts/${postId}`);
 		}
-	}
+	},
+	
 };

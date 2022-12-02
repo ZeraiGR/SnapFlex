@@ -1,7 +1,13 @@
+import { Link } from "react-router-dom";
+
+import styles from './Header.module.css';
+import { Navigation } from "../Navigation/Navigation";
+
 export const Header = () => {
   return (
-    <header className="header">
-			header
+    <header className={styles.header}>
+			<Link to="/">Logo</Link>
+			<Navigation />
     </header>
   )
 }

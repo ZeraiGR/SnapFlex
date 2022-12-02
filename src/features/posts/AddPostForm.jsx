@@ -1,37 +1,27 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addNewPost } from './notebookSlice';
+import { addNewPost } from './postsSlice';
 
-export const AddNoteForm = () => {
+export const AddPostForm = () => {
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-	const [userId, setUserId] = useState('');
-	const [addRequestStatus, setAddRequestStatus] = useState('idle');
+  const [body, setBody] = useState('');
+	const [userId, setUserId] = useState(null);
 
 	const dispatch = useDispatch();
 
 	const users = useSelector(state => state.users);
 
   const onTitleChanged = e => setTitle(e.target.value);
-  const onContentChanged = e => setContent(e.target.value);
+  const onContentChanged = e => setBody(e.target.value);
 	const onAuthorChanged = e => setUserId(e.target.value);
 
-		const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
+	const canSave = [title, body, userId].every(Boolean);
 
 	const onSavePostClicked = async () => {
-		if (canSave) {
-			try {
-				setAddRequestStatus('pending');
-				await dispatch(addNewPost({title, content, userId: +userId})).unwrap();
-				setTitle('');
-    		setContent('');
-				setUserId('');
-			} catch (error) {
-				console.error('Failed to save the post: ', error);
-			} finally {
-				setAddRequestStatus('idle');
-			}
-		}
+		await dispatch(addNewPost({title, body, userId: +userId})).unwrap();
+		setTitle('');
+		setBody('');
+		setUserId('');
 	}
 
 	const usersOptions = users.map(user => (
@@ -53,7 +43,7 @@ export const AddNoteForm = () => {
           onChange={onTitleChanged}
         />
 				<label htmlFor="postAuthor">Author:</label>
-        <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
+        <select id="postAuthor" value={userId || ''} onChange={onAuthorChanged}>
           <option value=""></option>
           {usersOptions}
         </select>
@@ -61,7 +51,7 @@ export const AddNoteForm = () => {
         <textarea
           id="postContent"
           name="postContent"
-          value={content}
+          value={body}
           onChange={onContentChanged}
         />
         <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
