@@ -18,6 +18,7 @@ import { EditPostForm } from './features/posts/EditPostForm';
 import { fetchUsers } from './features/users/usersSlice';
 import { UsersList } from './features/users/UsersList';
 import { UsersSingle } from './features/users/UsersSingle';
+import { TodoList } from './features/todos/TodoList';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
 					{path: "posts/:postId", element: <SinglePost />},
 					{path: "posts/:postId/edit", element: <EditPostForm />},
 					{path: "users", element: <UsersList/>},
-					{path: "users/:userId", element: <UsersSingle />}
+					{path: "users/:userId", element: <UsersSingle />},
+					{path: "todos", element: <TodoList />}
 				]
 			}
 		]

@@ -17,6 +17,7 @@ export const Navigation = () => {
 			<ul>
 				<MenuItem link={"/users"} title={"Users"} />
 				<MenuItem link={"/posts"} title={"Posts"} />
+				<MenuItem link={"/todos"} title={"Todos"} />
 			</ul>
     </nav>
   )

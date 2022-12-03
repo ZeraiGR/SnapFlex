@@ -26,7 +26,10 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (post, {dis
 	return response;
 });
 
-// delete post
+export const deletePost = createAsyncThunk('posts/deletePost', async (postId) => {
+	await API.posts.deletePost(postId);
+	return postId;
+});
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -39,7 +42,7 @@ const postsSlice = createSlice({
 				existingPost.title = title;
 				existingPost.body = body;
 			}
-		}
+		},
   },
 	extraReducers(builder) {
 		builder
@@ -55,10 +58,11 @@ const postsSlice = createSlice({
 				state.error = action.error.message;
 			})
 			.addCase(addNewPost.fulfilled, postsAdapter.addOne)
+			.addCase(deletePost.fulfilled, postsAdapter.removeOne)
 	}
 });
 
-export const { postAdded, postUpdated } = postsSlice.actions;
+export const { postAdded, postUpdated, postDeleted } = postsSlice.actions;
 
 export default postsSlice.reducer;
 

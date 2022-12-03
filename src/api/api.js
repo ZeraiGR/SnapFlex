@@ -5,7 +5,7 @@ const dictionaryInstance = axios.create({
   headers: {'X-Api-Key': 'oYWsJz7BApDYuFazKDgaRw==bUYczlJU6QdbiIR4'}
 });
 
-const postsInstance = axios.create({
+const jsonPhInstance = axios.create({
 	baseURL: 'https://jsonplaceholder.typicode.com/',
 });
 
@@ -17,23 +17,45 @@ export const API = {
 	},
 	users: {
 		getUsers: async () => {
-			return postsInstance.get('users').then((res) => res.data);
+			return jsonPhInstance.get('users').then((res) => res.data);
 		},
+		addUser: async (user) => {
+			return jsonPhInstance.post('users', user).then((res) => res.data);
+		},
+		updateUser: async (user) => {
+			return jsonPhInstance.put(`users/${user.id}`, user).then((res) => res.data);
+		},
+		deleteUser: async (userId) => {
+			return jsonPhInstance.delete(`users/${userId}`);
+		}
 	},
 	posts: {
 		getPosts: async () => {
-			return postsInstance.get('posts').then((res) => res.data
+			return jsonPhInstance.get('posts').then((res) => res.data
 			);
 		},
 		addPost: async (post) => {
-			return postsInstance.post('posts', post).then((res) => res.data);
+			return jsonPhInstance.post('posts', post).then((res) => res.data);
 		},
 		updatePost: async (post) => {
-			return postsInstance.put(`posts/${post.id}`, post).then((res) => res.data);
+			return jsonPhInstance.put(`posts/${post.id}`, post).then((res) => res.data);
 		},
 		deletePost: async (postId) => {
-			return postsInstance.delete(`posts/${postId}`);
+			return jsonPhInstance.delete(`posts/${postId}`);
 		}
 	},
-	
+	todos: {
+		getTodos: async () => {
+			return jsonPhInstance.get('todos').then((res) => res.data);
+		},
+		addTodo: async (todo) => {
+			return jsonPhInstance.post('todos', todo).then((res) => res.data);
+		},
+		updateTodo: async (todo) => {
+			return jsonPhInstance.put(`todos/${todo.id}`, todo).then((res) => res.data);
+		},
+		deleteTodo: async (todoId) => {
+			return jsonPhInstance.delete(`todos/${todoId}`);
+		},
+	}
 };
