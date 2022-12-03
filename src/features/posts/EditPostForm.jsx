@@ -36,7 +36,7 @@ export const EditPostForm = () => {
 
   const onSavePostClicked = () => {
     if (title && body) {
-      dispatch(updatePost({ id: postId, title, body, userId: post.userId}));
+      dispatch(updatePost({ id: +postId, title, body, userId: post.userId}));
       navigate(`/posts/${postId}`);
     }
   }

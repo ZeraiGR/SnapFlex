@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter, createSelector } fr
 import { API } from '../../api/api';
 
 const postsAdapter = createEntityAdapter({
-	sortComparer: (a, b) => a.id - b.id
+	sortComparer: (a, b) => b.id - a.id
 });
 
 const initialState = postsAdapter.getInitialState({
@@ -25,6 +25,8 @@ export const updatePost = createAsyncThunk('posts/updatePost', async (post, {dis
 	dispatch(postUpdated(response));
 	return response;
 });
+
+// delete post
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -60,7 +62,7 @@ export const { postAdded, postUpdated } = postsSlice.actions;
 
 export default postsSlice.reducer;
 
-export const {selectAll: selectAllPosts, selectById: selectPostById} = postsAdapter.getSelectors(state => state.posts);
+export const {selectAll: selectAllPosts, selectById: selectPostById, selectIds: selectPostIds} = postsAdapter.getSelectors(state => state.posts);
 
 export const selectPostByUser = createSelector(
 	[selectAllPosts, (_, userId) => userId],
