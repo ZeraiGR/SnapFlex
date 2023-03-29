@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend-nest
+      dockerfile: Dockerfile
+      target: development
+    container_name: nest
+    restart: always
+    depends_on:
+      - mongo
+    volumes:
+      - /usr/src/app/node_modules
+      - ./backend-nest:/usr/src/app
+    env_file:
+    - .env
+    command: npm run start:dev
+    ports:
+      - ${NEST_APP_PORT}:${NEST_APP_PORT}
+  frontend:
+    build:
+      context: ./frontend-next
+      dockerfile: Dockerfile
+    container_name: next
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - /app/node_modules
+      - /app/.next
+      - ./frontend-next:/app
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    volumes:
+      - mongo_data_container:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: snap-flex
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    restart: always
+    ports:
+      - ${MONGO_EXPRESS_PORT}:${MONGO_EXPRESS_PORT}
+
+volumes:
+  mongo_data_container:
