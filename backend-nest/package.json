@@ -1,8 +1,8 @@
 {
   "name": "backend-nest",
   "version": "0.0.1",
-  "description": "backend for SnapFlex application",
-  "author": "",
+  "description": "backend for SnapFlex educational application",
+  "author": "Kirill Gruzdev",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/platform-express": "^9.0.0",
