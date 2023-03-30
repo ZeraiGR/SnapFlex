@@ -64,12 +64,33 @@ export class AuthService {
     return tokens;
   }
 
-  async refreshTokens(dto: SigninDto) {
-    // code
+  async refreshTokens(dto: SigninDto): Promise<Tokens> {
+    const user = await this.usersService.findByEmail(dto.email);
+
+    if (!user || !user.hashedRt)
+      throw new ForbiddenException(USER_NOT_FOUNT_ERROR);
+
+    const passwordMatches = await this.compareHashValue(
+      user.hash,
+      dto.password,
+    );
+
+    if (!passwordMatches) throw new ForbiddenException(WRONG_PASSWORD_ERROR);
+
+    const tokens = await this.getTokens(user.id, user.username);
+
+    await this.updateRtHash(user.id, tokens.refresh_token);
+
+    return tokens;
   }
 
-  async logout() {
-    // code...
+  async logout(userId: string) {
+    await this.userModel.findByIdAndUpdate(
+      userId,
+      { hashedRt: null },
+      { new: true },
+    );
+    return true;
   }
 
   async createUser(
