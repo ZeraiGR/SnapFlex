@@ -64,16 +64,13 @@ export class AuthService {
     return tokens;
   }
 
-  async refreshTokens(dto: SigninDto): Promise<Tokens> {
-    const user = await this.usersService.findByEmail(dto.email);
+  async refreshTokens(userId: string, rt: string): Promise<Tokens> {
+    const user = await this.usersService.findById(userId);
 
     if (!user || !user.hashedRt)
       throw new ForbiddenException(USER_NOT_FOUNT_ERROR);
 
-    const passwordMatches = await this.compareHashValue(
-      user.hash,
-      dto.password,
-    );
+    const passwordMatches = await this.compareHashValue(user.hash, rt);
 
     if (!passwordMatches) throw new ForbiddenException(WRONG_PASSWORD_ERROR);
 

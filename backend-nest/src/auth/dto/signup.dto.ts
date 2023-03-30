@@ -8,7 +8,7 @@ import {
   IsDate,
 } from 'class-validator';
 
-import { Match } from '../decorators/';
+import { Match } from '../../common/decorators';
 
 export class SignupDto {
   @IsNotEmpty()
