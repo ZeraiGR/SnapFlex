@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 
 import { JwtPayload, JwtPayloadWithRt } from '../types';
-import { WRONG_REFRESH_TOKEN } from '../auth.constants';
+import { WRONG_REFRESH_TOKEN_ERROR } from '../auth.constants';
 
 @Injectable()
 export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
@@ -23,7 +23,7 @@ export class RtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
       ?.replace('Bearer', '')
       .trim();
 
-    if (!refreshToken) throw new ForbiddenException(WRONG_REFRESH_TOKEN);
+    if (!refreshToken) throw new ForbiddenException(WRONG_REFRESH_TOKEN_ERROR);
 
     return {
       ...payload,
