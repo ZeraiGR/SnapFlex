@@ -29,12 +29,12 @@ export class AuthService {
     email,
     username,
     password,
-    dateOfBirch,
+    dateOfBirth,
   }: SignupDto): Promise<Tokens> {
     const passwordHash = await this.hashValue(password);
 
     const user = await this.createUser(
-      { email, username, dateOfBirch },
+      { email, username, dateOfBirth },
       passwordHash,
     );
 
@@ -95,10 +95,10 @@ export class AuthService {
     passwordHash: string,
   ): Promise<any> {
     // todo: correct returned type
-    return new this.userModel({
+    return await new this.userModel({
       ...dto,
       passwordHash,
-    });
+    }).save();
   }
 
   async updateRtHash(userId: string, rt: string): Promise<void> {

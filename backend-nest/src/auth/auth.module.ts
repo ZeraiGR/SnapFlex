@@ -7,6 +7,10 @@ import { User, UserSchema } from '../user/user.schema';
 import { AuthService } from './auth.service';
 import { UserModule } from 'src/user/user.module';
 import { RtStrategy, AtStrategy } from './strategies';
+import {
+  IsEmailNotRegistered,
+  IsUsernameNotRegistered,
+} from 'src/common/decorators';
 
 @Module({
   imports: [
@@ -14,7 +18,13 @@ import { RtStrategy, AtStrategy } from './strategies';
     UserModule,
     JwtModule.register({}),
   ],
-  providers: [AuthService, AtStrategy, RtStrategy],
+  providers: [
+    AuthService,
+    AtStrategy,
+    RtStrategy,
+    IsEmailNotRegistered,
+    IsUsernameNotRegistered,
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}

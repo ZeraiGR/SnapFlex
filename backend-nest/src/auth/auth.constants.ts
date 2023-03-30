@@ -13,6 +13,9 @@ export const FIELD_IS_EMPTY_ERROR = 'Это обязательное поле';
 export const LIMIT_20_EXCEEDED_ERROR = 'Превышен лимит в 20 символов';
 export const LIMIT_4_NOT_EXCEEDED_ERROR = 'Минимум 4 символа';
 export const WRONG_FORMAT_DATE_ERROR = 'Неверный формат даты';
+export const EMAIL_ALREADY_EXISTS_ERROR =
+  'Пользователь с данным email уже существует';
+export const USERNAME_ALREADY_EXISTS_ERROR = 'Данный username занят';
 
 export const PASSWORD_VALIDATE_REGEXP =
   /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
