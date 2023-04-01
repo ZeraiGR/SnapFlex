@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-import { Card } from 'src/card/card.chema';
 import { Training } from 'src/training/training.chema';
-import { UserRole } from '../auth/types';
+import { UserRole } from '../types';
+import { Card } from '.';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -25,15 +25,21 @@ export class User {
   hashedRt: string;
 
   @Prop({ default: 0 })
-  exp: number;
+  repeatedCardsCnt: number;
 
   @Prop({ default: UserRole.Student })
   role: UserRole;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Card' }] })
+  @Prop({
+    type: [{ type: [{ type: Card }], default: [] }],
+  })
   cards: Card[];
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Training' }] })
+  @Prop({
+    type: [
+      { type: mongoose.Schema.Types.ObjectId, ref: 'Training', default: [] },
+    ],
+  })
   trainings: Training[];
 }
 

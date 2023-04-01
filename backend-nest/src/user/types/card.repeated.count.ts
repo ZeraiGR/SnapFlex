@@ -1,0 +1,10 @@
+export enum RepeatedCount {
+  FIRST = 0,
+  SECOND = 1800,
+  FOURTH = 86400,
+  FIFTH = 259200,
+  SIXTH = 604800,
+  SEVENTH = 1814400,
+  EIGHTH = 7776000,
+  NINTH = 31536000,
+}
