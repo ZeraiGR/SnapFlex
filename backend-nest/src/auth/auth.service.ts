@@ -1,25 +1,26 @@
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import {
   ForbiddenException,
   Injectable,
   ServiceUnavailableException,
 } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import * as argon from 'argon2';
 
-import { User, UserDocument } from '../user/user.schema';
+import { User, UserDocument } from '../user/schemas/user.schema';
 import { SigninDto, SignupDto } from './dto';
 import { ARGON_ERROR, WRONG_PASSWORD_ERROR } from './auth.constants';
 import { UserService } from 'src/user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { JwtPayload, Tokens } from './types';
 import { USER_NOT_FOUNT_ERROR } from 'src/user/user.constants';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
@@ -38,7 +39,7 @@ export class AuthService {
       passwordHash,
     );
 
-    const tokens = await this.getTokens(user._id, user.username);
+    const tokens = await this.getTokens(user.id, user.username);
 
     await this.updateRtHash(user.id, tokens.refresh_token);
 
@@ -51,7 +52,7 @@ export class AuthService {
     if (!user) throw new ForbiddenException(USER_NOT_FOUNT_ERROR);
 
     const passwordMatches = await this.compareHashValue(
-      user.hash,
+      user.passwordHash,
       dto.password,
     );
 
@@ -70,7 +71,7 @@ export class AuthService {
     if (!user || !user.hashedRt)
       throw new ForbiddenException(USER_NOT_FOUNT_ERROR);
 
-    const passwordMatches = await this.compareHashValue(user.hash, rt);
+    const passwordMatches = await this.compareHashValue(user.hashedRt, rt);
 
     if (!passwordMatches) throw new ForbiddenException(WRONG_PASSWORD_ERROR);
 
@@ -81,7 +82,7 @@ export class AuthService {
     return tokens;
   }
 
-  async logout(userId: string) {
+  async logout(userId: string): Promise<boolean> {
     await this.userModel.findByIdAndUpdate(
       userId,
       { hashedRt: null },
@@ -93,8 +94,7 @@ export class AuthService {
   async createUser(
     dto: Omit<SignupDto, 'password' | 'passwordConfirm'>,
     passwordHash: string,
-  ): Promise<any> {
-    // todo: correct returned type
+  ): Promise<UserDocument> {
     return await new this.userModel({
       ...dto,
       passwordHash,
@@ -130,28 +130,20 @@ export class AuthService {
   }
 
   async hashValue(value: string): Promise<string> {
-    let res = null;
-
     try {
-      res = await argon.hash(value);
+      return await argon.hash(value);
     } catch (error) {
       // send error to logger
       throw new ServiceUnavailableException(ARGON_ERROR);
     }
-
-    return res;
   }
 
   async compareHashValue(hash: string, value: string): Promise<boolean> {
-    let res;
-
     try {
-      res = await argon.verify(hash, value);
+      return await argon.verify(hash, value);
     } catch (error) {
       // send error to logger
       throw new ServiceUnavailableException(ARGON_ERROR);
     }
-
-    return res;
   }
 }

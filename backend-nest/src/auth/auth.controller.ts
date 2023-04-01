@@ -14,8 +14,8 @@ import {
   Public,
 } from 'src/common/decorators';
 import { SigninDto, SignupDto } from './dto';
-import { RtGuard } from 'src/common/guards/rt.guard';
 import { Tokens } from './types';
+import { RtGuard } from 'src/common/guards';
 
 @Controller('auth')
 export class AuthController {
