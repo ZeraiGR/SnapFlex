@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+import { Type } from 'class-transformer';
 
 import { Training } from 'src/training/training.chema';
+import { Card } from 'src/card/schemas/card.schema';
 import { UserRole } from '../types';
-import { Card } from '.';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -31,16 +32,16 @@ export class User {
   role: UserRole;
 
   @Prop({
-    type: [{ type: [{ type: Card }], default: [] }],
+    type: [{ type: [{ type: Types.ObjectId, ref: Card.name }], default: [] }],
   })
+  @Type(() => Card)
   cards: Card[];
 
   @Prop({
-    type: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Training', default: [] },
-    ],
+    type: [{ type: Types.ObjectId, ref: Training.name, default: [] }],
   })
-  trainings: Training[];
+  @Type(() => Training)
+  trainings: Training;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
