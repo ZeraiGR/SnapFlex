@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TrainingModule } from './training/training.module';
 import { AtGuard } from './common/guards';
+import { CardModule } from './card/card.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AtGuard } from './common/guards';
     AuthModule,
     UserModule,
     TrainingModule,
+    CardModule,
   ],
   providers: [
     {
