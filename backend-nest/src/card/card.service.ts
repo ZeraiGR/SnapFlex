@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { Card, CardDocument } from './schemas/card.schema';
 import {
@@ -92,6 +93,19 @@ export class CardService {
       .exec();
 
     return true;
+  }
+
+  @Cron(CronExpression.EVERY_30_MINUTES)
+  async updateCardsAvailableStatus() {
+    const cards = await this.cardModel.find({ isAvailable: false }).exec();
+
+    for (const card of cards) {
+      const passedTime = new Date().getTime() - card.lastRepeatedAt.getTime();
+      const curStatusTime = card.repeatedStatus * 1000;
+
+      if (passedTime > curStatusTime)
+        await card.updateOne({ isAvailable: true });
+    }
   }
 
   async delete(id: string): Promise<Types.ObjectId> {
