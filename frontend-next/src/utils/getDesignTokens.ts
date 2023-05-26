@@ -27,6 +27,17 @@ export const getDesignTokens = (mode: PaletteMode) => ({
     }),
     contrastThreshold: 4.5,
   },
+  typography: {
+    fontFamily: [
+      'Roboto',
+      '-apple-system',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(',')
+  },
   components: {
     MuiSwitch: {
       defaultProps: {
